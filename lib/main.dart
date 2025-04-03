@@ -36,16 +36,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: _router,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: primaryColor,
-        ), // Use the primary color constant from palette.dart
-        useMaterial3: true,
-        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          selectedLabelStyle: TextStyle(color: primaryColor),
-        ),
-      ),
+      title: 'expar',
+      theme: Palette.getTheme(),
     );
   }
 }
