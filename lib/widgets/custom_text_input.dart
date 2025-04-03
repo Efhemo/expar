@@ -1,0 +1,59 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:myapp/utils/palette.dart';
+
+class CustomTextInput extends StatelessWidget {
+  final String? labelText;
+  final String? hintText;
+  final Widget? prefixIcon;
+  final TextEditingController? controller;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
+  final bool obscureText;
+
+  const CustomTextInput({
+    Key? key,
+    this.labelText,
+    this.hintText,
+    this.prefixIcon,
+    this.controller,
+    this.keyboardType,
+    this.inputFormatters,
+    this.obscureText = false,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (labelText != null)
+            Text(labelText!, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+            SizedBox(height: 5),
+
+          TextFormField(
+            controller: controller,
+            keyboardType: keyboardType,
+            inputFormatters: inputFormatters,
+            obscureText: obscureText,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: fillGrey,
+              hintText: hintText,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(color: strokeGrey, width: 1),
+              ),
+              prefixIcon: prefixIcon,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

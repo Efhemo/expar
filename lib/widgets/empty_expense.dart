@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:myapp/utils/palette.dart';
 
 class EmptyExpense extends StatelessWidget {
@@ -18,7 +19,9 @@ class EmptyExpense extends StatelessWidget {
           const Text('Create an expense report to get started'),
           const SizedBox(height: 16),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              context.go('/addExpense');
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: primaryColor,
               foregroundColor: Colors.white,
@@ -28,7 +31,7 @@ class EmptyExpense extends StatelessWidget {
               ),
             ),
             child: const Text('Add expense report',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
           ),
         ],
       ),

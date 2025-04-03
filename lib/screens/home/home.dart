@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         title: SvgPicture.asset(
           'assets/app_bar_icon.svg',
-          height: 30,
+          height: 40,
         ),
         centerTitle: true,
         elevation: 0,
