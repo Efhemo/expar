@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:myapp/screens/home.dart';
-
-import 'screens/dashboard/add_expense.dart';
+import 'package:myapp/screens/dashboard.dart';
+import 'package:myapp/screens/home/add_expense.dart';
+import 'package:myapp/utils/palette.dart'; // Import the palette.dart file
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +14,7 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return const HomeScreen(title: "expar");
+        return const Dashboard();
       },
       routes: <RouteBase>[
         GoRoute(
@@ -34,11 +34,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       routerConfig: _router,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF3B6BDD)),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: primaryColor,
+        ), // Use the primary color constant from palette.dart
         useMaterial3: true,
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          selectedLabelStyle: TextStyle(color: primaryColor),
+        ),
       ),
     );
   }
