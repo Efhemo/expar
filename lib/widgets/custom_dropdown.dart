@@ -8,12 +8,12 @@ class CustomDropdown<T> extends StatelessWidget {
   final ValueChanged<T?>? onChanged;
 
   const CustomDropdown({
-    Key? key,
+    super.key,
     this.labelText,
     required this.items,
     required this.onChanged,
     this.value,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class CustomDropdown<T> extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (labelText != null)
-            Text(labelText!, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+            Text(labelText!, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
             SizedBox(height: 5),
 
           DropdownButtonFormField<T>(
