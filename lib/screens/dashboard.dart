@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:myapp/screens/home/home.dart';
 import 'package:myapp/screens/stat/stat_screen.dart';
@@ -32,7 +33,7 @@ class _DashboardState extends State<Dashboard> {
               blurRadius: 20,
               color: Colors.black.withOpacity(.1),
               offset: Offset(0, -2),
-            )
+            ),
           ],
         ),
         child: BottomNavigationBar(
@@ -55,7 +56,9 @@ class _DashboardState extends State<Dashboard> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          context.go('/addExpense');
+        },
         backgroundColor: primaryColor,
         shape: const CircleBorder(),
         child: const Icon(Iconsax.add, color: Colors.white),
