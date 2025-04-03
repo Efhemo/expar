@@ -1,8 +1,12 @@
+import 'dart:developer';
+
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:myapp/utils/currency_input_formatter.dart';
+import 'package:myapp/utils/palette.dart';
 import 'package:myapp/widgets/custom_button.dart';
-import 'package:myapp/widgets/custom_dropdown.dart';
+import 'package:myapp/widgets/custom_text_button.dart';
 import 'package:myapp/widgets/custom_text_input.dart';
 
 class AddExpenseScreen extends StatefulWidget {
@@ -20,7 +24,18 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
   String? _selectedCategory;
 
-  final _categories = ['Food', 'Transportation', 'Entertainment'];
+  final List<String> _categories = [
+    'Food',
+    'Transportation',
+    'Entertainment',
+    'Equipment',
+  ];
+
+  void _addCategory(String newCategory) {
+    setState(() {
+      _categories.add(newCategory);
+    });
+  }
 
   @override
   void dispose() {
@@ -74,25 +89,39 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                   ],
                 ),
                 const SizedBox(height: 8),
-                CustomDropdown<String>(
-                  labelText: 'Category',
-                  value: _selectedCategory,
-                  items: _categories.map((item) => DropdownMenuItem(
-                    value: item,
-                    child: Text(item),
-                  )).toList(),
+                CustomDropdown<String>.search(
+                  hintText: 'Select category',
+                  items: _categories,
+                  initialItem: _selectedCategory,
+                  overlayHeight: 342,
+                  decoration: CustomDropdownDecoration(
+                    closedFillColor: fillGrey,
+                    closedBorderRadius: BorderRadius.circular(8.0),
+                    closedBorder: Border.all(color: strokeGrey, width: 1),
+                    expandedBorderRadius: BorderRadius.circular(8.0),
+                    expandedBorder: Border.all(color: strokeGrey, width: 1),
+                  ),
                   onChanged: (value) {
+                    log('SearchDropdown onChanged value: $value');
                     setState(() {
                       _selectedCategory = value;
                     });
                   },
                 ),
+                Row(
+                  children: [
+                    Expanded(child: SizedBox.shrink()),
+                    CustomTextButton(addCategory: _addCategory),
+                  ],
+                ),
+
                 const SizedBox(height: 8),
                 CustomTextInput(
                   labelText: 'Description (Optional)',
                   hintText: 'Note',
                   controller: _descriptionController,
                   keyboardType: TextInputType.multiline,
+                  maxLines: 3,
                 ),
                 const SizedBox(height: 20),
                 Align(

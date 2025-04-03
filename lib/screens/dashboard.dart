@@ -58,7 +58,7 @@ class _DashboardState extends State<Dashboard> {
         onPressed: () {},
         backgroundColor: primaryColor,
         shape: const CircleBorder(),
-        child: const Icon(Icons.add, color: Colors.white),
+        child: const Icon(Iconsax.add, color: Colors.white),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );

@@ -10,6 +10,7 @@ class CustomTextInput extends StatelessWidget {
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final bool obscureText;
+  final int? maxLines;
 
   const CustomTextInput({
     Key? key,
@@ -20,6 +21,7 @@ class CustomTextInput extends StatelessWidget {
     this.keyboardType,
     this.inputFormatters,
     this.obscureText = false,
+    this.maxLines,
   }) : super(key: key);
 
   @override
@@ -38,6 +40,7 @@ class CustomTextInput extends StatelessWidget {
             keyboardType: keyboardType,
             inputFormatters: inputFormatters,
             obscureText: obscureText,
+            maxLines: maxLines,
             decoration: InputDecoration(
               filled: true,
               fillColor: fillGrey,
