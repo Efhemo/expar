@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/utils/palette.dart';
 
 class HomeStat extends StatelessWidget {
   const HomeStat({super.key});
@@ -9,8 +10,9 @@ class HomeStat extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.blue[50],
-          borderRadius: BorderRadius.circular(10),
+          color: lightBlue,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: primaryColor, width: 1),
         ),
         padding: const EdgeInsets.all(16.0),
         child: Row(

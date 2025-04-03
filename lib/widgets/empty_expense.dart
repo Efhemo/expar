@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/utils/palette.dart';
 
 class EmptyExpense extends StatelessWidget {
   const EmptyExpense({super.key});
@@ -11,7 +12,7 @@ class EmptyExpense extends StatelessWidget {
         children: [
           const Text(
             'No expense report found!',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 8),
           const Text('Create an expense report to get started'),
@@ -19,14 +20,15 @@ class EmptyExpense extends StatelessWidget {
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
+              backgroundColor: primaryColor,
               foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 12),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
               ),
             ),
-            child: const Text('Add expense report'),
+            child: const Text('Add expense report',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
           ),
         ],
       ),

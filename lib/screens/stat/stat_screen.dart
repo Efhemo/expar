@@ -6,6 +6,7 @@ class StatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
+      backgroundColor: Color.fromRGBO(255, 255, 255, 0.8),
       body: Center(
         child: Text("Stats"),
       ),
