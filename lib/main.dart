@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myapp/screens/dashboard.dart';
 import 'package:myapp/screens/home/add_expense.dart';
+import 'package:myapp/screens/successful_page.dart';
 import 'package:myapp/utils/palette.dart';
 
 void main() {
@@ -21,6 +22,12 @@ final GoRouter _router = GoRouter(
           path: 'addExpense',
           builder: (BuildContext context, GoRouterState state) {
             return const AddExpenseScreen();
+          },
+        ),
+        GoRoute(
+          path: 'successful',
+          builder: (BuildContext context, GoRouterState state) {
+            return const SuccessfulPage();
           },
         ),
       ],

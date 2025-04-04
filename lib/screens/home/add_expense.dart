@@ -3,10 +3,11 @@ import 'dart:developer';
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:myapp/utils/currency_input_formatter.dart';
 import 'package:myapp/utils/palette.dart';
+import 'package:myapp/widgets/add_category_text_button.dart';
 import 'package:myapp/widgets/custom_button.dart';
-import 'package:myapp/widgets/custom_text_button.dart';
 import 'package:myapp/widgets/custom_text_input.dart';
 
 class AddExpenseScreen extends StatefulWidget {
@@ -111,7 +112,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 Row(
                   children: [
                     Expanded(child: SizedBox.shrink()),
-                    CustomTextButton(addCategory: _addCategory),
+                    AddCategoryTextButton(addCategory: _addCategory),
                   ],
                 ),
 
@@ -131,6 +132,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         // Process data
+                        context.go('/successful');
                       }
                     },
                   ),
