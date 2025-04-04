@@ -13,7 +13,7 @@ class CustomTextInput extends StatelessWidget {
   final int? maxLines;
 
   const CustomTextInput({
-    Key? key,
+    super.key,
     this.labelText,
     this.hintText,
     this.prefixIcon,
@@ -22,7 +22,7 @@ class CustomTextInput extends StatelessWidget {
     this.inputFormatters,
     this.obscureText = false,
     this.maxLines,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

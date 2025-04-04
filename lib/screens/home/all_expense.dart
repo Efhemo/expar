@@ -6,10 +6,10 @@ class AllExpense extends StatelessWidget {
   final List<Expense> expenses;
   final Function(int index) onDismissed;
   const AllExpense({
-    Key? key,
+    super.key,
     required this.expenses,
     required this.onDismissed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

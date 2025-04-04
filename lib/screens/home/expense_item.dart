@@ -4,11 +4,11 @@ import 'package:myapp/utils/palette.dart';
 
 class ExpenseItem extends StatelessWidget {
   const ExpenseItem({
-    Key? key,
+    super.key,
     required this.expense,
     required this.onDismissed,
     required this.index,
-  }) : super(key: key);
+  });
 
   final Expense expense;
   final int index;
