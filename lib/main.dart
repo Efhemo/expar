@@ -4,9 +4,24 @@ import 'package:myapp/screens/dashboard.dart';
 import 'package:myapp/screens/home/add_expense.dart';
 import 'package:myapp/screens/successful_page.dart';
 import 'package:myapp/utils/palette.dart';
+import 'package:provider/provider.dart';
+import 'database_service.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final databaseService = DatabaseService();
+  await databaseService.initializeIsar();
+
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider<DatabaseService>(
+          create: (_) => databaseService,
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 final GoRouter _router = GoRouter(

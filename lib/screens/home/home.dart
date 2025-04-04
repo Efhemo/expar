@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:myapp/database_service.dart';
 import 'package:myapp/model/Expense.dart';
 import 'package:myapp/screens/home/all_expense.dart';
 import 'package:myapp/widgets/empty_expense.dart';
 import 'package:myapp/widgets/home_stat.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,16 +15,24 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Expense> expenses = [
-    Expense(name: 'Egg & veggies', category: 'Groceries', amount: 20.0),
-    Expense(name: 'Bread and butter', category: 'Groceries', amount: 20.0),
-    Expense(name: 'Petrol', category: 'Transportation', amount: 20.0),
-  ];
+  List<Expense> _expenses = [];
 
-  void _onDismissed(int index) {
-    setState(() {
-      expenses.removeAt(index);
-    });
+  @override
+  void initState() {
+    super.initState();
+    _loadExpenses();
+  }
+
+  Future<void> _loadExpenses() async {
+    final databaseService = Provider.of<DatabaseService>(context, listen: false);
+    _expenses = await databaseService.getLatestExpenses(7);
+    setState(() {});
+  }
+
+  void _onDismissed(int index) async {
+    final databaseService = Provider.of<DatabaseService>(context, listen: false);
+    await databaseService.deleteExpense(_expenses[index].id);
+    _loadExpenses();
   }
 
   @override
@@ -38,8 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         children: [
           HomeStat(),
-          expenses.isNotEmpty
-              ? AllExpense(expenses: expenses, onDismissed: _onDismissed)
+          _expenses.isNotEmpty
+              ? AllExpense(expenses: _expenses, onDismissed: _onDismissed)
               : EmptyExpense(),
         ],
       ),

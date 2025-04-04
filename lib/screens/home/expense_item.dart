@@ -4,11 +4,11 @@ import 'package:myapp/utils/palette.dart';
 
 class ExpenseItem extends StatelessWidget {
   const ExpenseItem({
-    super.key,
+    Key? key,
     required this.expense,
     required this.onDismissed,
     required this.index,
-  });
+  }) : super(key: key);
 
   final Expense expense;
   final int index;
@@ -17,7 +17,7 @@ class ExpenseItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: Key(expense.name),
+      key: Key(expense.id.toString()),
       onDismissed: (direction) {
         onDismissed(index);
       },
@@ -50,17 +50,17 @@ class ExpenseItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  expense.name,
+                  expense.name ?? '',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
                 Text(
-                  expense.category,
+                  expense.category.value?.name ?? '',
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
               ],
             ),
             Text(
-              '-\$${expense.amount.toStringAsFixed(2)}',
+              '-\$${expense.amount?.toStringAsFixed(2) ?? '0.00'}',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
           ],
