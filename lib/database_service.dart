@@ -73,6 +73,11 @@ class DatabaseService {
     return isarInstance.expenses.where().watch(fireImmediately: true).map((expenses) => expenses.toList());
   }
 
+  Stream<List<Category>> watchAllCategories() {
+    final isarInstance = getIsar();
+    return isarInstance.categorys.where().watch(fireImmediately: true).map((categories) => categories.toList());
+  }
+
   Future<List<Expense>> getLatestExpenses(int limit) async {
     final isarInstance = getIsar();
     return await isarInstance.expenses.where().sortByDateDesc().limit(limit).findAll();
