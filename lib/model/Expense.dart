@@ -1,7 +1,14 @@
-class Expense {
-  final String name;
-  final String category;
-  final double amount;
+import 'package:objectbox/objectbox.dart';
+import 'Category.dart';
 
-  Expense({required this.name, required this.category, required this.amount});
+@Entity()
+class Expense {
+  @Id()
+  int id = 0;
+  String? name;
+  double? amount;
+  DateTime? date;
+  String? description;
+
+  final category = ToOne<Category>();
 }

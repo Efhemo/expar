@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myapp/model/Expense.dart';
 import 'package:myapp/screens/home/expense_item.dart';
 
-class AllExpense extends StatefulWidget {
+class AllExpense extends StatelessWidget {
   final List<Expense> expenses;
   final Function(int index) onDismissed;
   const AllExpense({
@@ -11,11 +11,6 @@ class AllExpense extends StatefulWidget {
     required this.onDismissed,
   });
 
-  @override
-  State<AllExpense> createState() => _AllExpenseState();
-}
-
-class _AllExpenseState extends State<AllExpense> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -36,12 +31,12 @@ class _AllExpenseState extends State<AllExpense> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: widget.expenses.length,
+              itemCount: expenses.length,
               itemBuilder: (context, index) {
-                final expense = widget.expenses[index];
+                final expense = expenses[index];
                 return ExpenseItem(
                   expense: expense,
-                  onDismissed: widget.onDismissed,
+                  onDismissed: onDismissed,
                   index: index,
                 );
               },
