@@ -1,14 +1,12 @@
-import 'dart:developer';
-
-import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myapp/data/database_service.dart';
 import 'package:myapp/model/Category.dart';
 import 'package:myapp/utils/currency_input_formatter.dart';
-import 'package:myapp/utils/palette.dart';
 import 'package:myapp/widgets/add_category_text_button.dart';
+import 'package:myapp/widgets/category_dropdown.dart';
 import 'package:myapp/widgets/custom_button.dart';
 import 'package:myapp/widgets/custom_text_input.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +14,7 @@ import 'package:provider/provider.dart';
 import 'controllers/add_expense_controller.dart';
 
 class AddExpenseScreen extends StatefulWidget {
-  const AddExpenseScreen({super.key});
+  const AddExpenseScreen({Key? key}) : super(key: key);
 
   @override
   _AddExpenseScreenState createState() => _AddExpenseScreenState();
@@ -74,6 +72,10 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                         labelText: 'Expense Name',
                         hintText: 'Enter expense name',
                         controller: controller.expenseNameController,
+                        errorText:
+                            controller.expenseNameController.text.isEmpty
+                                ? 'Expense name is required'
+                                : null,
                       ),
                       const SizedBox(height: 8),
                       CustomTextInput(
@@ -86,6 +88,10 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                           FilteringTextInputFormatter.digitsOnly,
                           CurrencyInputFormatter(),
                         ],
+                        errorText:
+                            controller.amountController.text.isEmpty
+                                ? 'Amount is required'
+                                : null,
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -96,36 +102,15 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                         ),
                       ),
                       const SizedBox(height: 5),
-                      FutureBuilder<List<Category>>(
-                        future: controller.getCategories(),
+                      StreamBuilder<List<Category>>(
+                        stream: controller.categories,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             final categories = snapshot.data!;
-                            return CustomDropdown<Category>.search(
-                              hintText: 'Select category',
-                              items: categories,
-                              // initialItem: initialCategory,
-                              overlayHeight: 342,
-                              decoration: CustomDropdownDecoration(
-                                closedFillColor: fillGrey,
-                                closedBorderRadius: BorderRadius.circular(8.0),
-                                closedBorder: Border.all(
-                                  color: strokeGrey,
-                                  width: 1,
-                                ),
-                                expandedBorderRadius: BorderRadius.circular(
-                                  8.0,
-                                ),
-                                expandedBorder: Border.all(
-                                  color: strokeGrey,
-                                  width: 1,
-                                ),
-                              ),
+                            return CategoryDropdown(
+                              categories: categories,
                               onChanged: (value) {
-                                log('SearchDropdown onChanged value: $value');
-                                setState(() {
-                                  controller.setSelectedCategory(value!);
-                                });
+                                controller.setSelectedCategory(value!);
                               },
                             );
                           } else if (snapshot.hasError) {
@@ -137,7 +122,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                       ),
                       Row(
                         children: [
-                          Expanded(child: SizedBox.shrink()),
+                          const Expanded(child: SizedBox.shrink()),
                           AddCategoryTextButton(
                             addCategory: (String newCategoryName) async {
                               await controller.addCategory(newCategoryName);
@@ -153,22 +138,32 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                         keyboardType: TextInputType.multiline,
                         maxLines: 3,
                       ),
-                    const SizedBox(height: 20),
-                    Align(
-                      alignment: Alignment.center,
-                      child: CustomButton(
-                        text: 'Add expense report',
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            final success = await controller.addExpense();
-                            if (success) {
-                              context.go('/successful');
+                      const SizedBox(height: 20),
+                      Align(
+                        alignment: Alignment.center,
+                        child: CustomButton(
+                          text: 'Add expense report',
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              if (controller.selectedCategory == null) {
+                                Fluttertoast.showToast(
+                                  msg: 'Please select a category',
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                );
+                                return;
+                              }
+                              final success = await controller.addExpense();
+                              if (success) {
+                                context.go('/successful');
+                              }
                             }
-                          }
-                        },
+                          },
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
                   ),
                 ),
               ),

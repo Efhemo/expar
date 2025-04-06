@@ -11,6 +11,7 @@ class CustomTextInput extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final bool obscureText;
   final int? maxLines;
+  final String? errorText;
 
   const CustomTextInput({
     super.key,
@@ -22,6 +23,7 @@ class CustomTextInput extends StatelessWidget {
     this.inputFormatters,
     this.obscureText = false,
     this.maxLines,
+    this.errorText,
   });
 
   @override
@@ -32,9 +34,10 @@ class CustomTextInput extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (labelText != null)
-            Text(labelText!, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-            SizedBox(height: 5),
-
+            Text(labelText!,
+                style: const TextStyle(
+                    fontSize: 14, fontWeight: FontWeight.w600)),
+          const SizedBox(height: 5),
           TextFormField(
             controller: controller,
             keyboardType: keyboardType,
@@ -45,12 +48,13 @@ class CustomTextInput extends StatelessWidget {
               filled: true,
               fillColor: fillGrey,
               hintText: hintText,
+              errorText: errorText,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),
               enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide(color: strokeGrey, width: 1),
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: strokeGrey, width: 1),
               ),
               prefixIcon: prefixIcon,
             ),

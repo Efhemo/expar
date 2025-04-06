@@ -14,19 +14,24 @@ class AddExpenseController extends ChangeNotifier {
     Category()..name = 'Transportation',
   ];
 
-  AddExpenseController({required this.databaseService});
+  late final Stream<List<Category>> _categories;
+  Stream<List<Category>> get categories => _categories;
 
-  Future<List<Category>> getCategories() async {
-    final categoriesFromDatabase =
-        await databaseService.watchAllCategories().first;
-    final allCategories = [...defaultCategories, ...categoriesFromDatabase];
-    return allCategories;
+  AddExpenseController({required this.databaseService}) {
+    _categories = databaseService.watchAllCategories();
   }
 
   void setSelectedCategory(Category category) {
     selectedCategory = category;
     notifyListeners();
   }
+
+  // Future<List<Category>> getCategories() async {
+  //   final categoriesFromDatabase =
+  //       await databaseService.watchAllCategories().first;
+  //   final allCategories = [...defaultCategories, ...categoriesFromDatabase];
+  //   return allCategories;
+  // }
 
   Future<Category?> addCategory(String name) async {
     return await databaseService.createCategory(name);

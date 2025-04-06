@@ -44,6 +44,7 @@ dependencies:
   animated_custom_dropdown: 3.1.1
   objectbox: ^4.1.0
   objectbox_flutter_libs: ^4.1.0
+  fluttertoast: ^8.2.12
 
   path_provider: any
 
