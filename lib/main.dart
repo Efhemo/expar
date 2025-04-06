@@ -6,8 +6,8 @@ import 'package:myapp/screens/successful_page.dart';
 import 'package:myapp/utils/palette.dart';
 import 'package:provider/provider.dart';
 
-import 'add_expense_controller.dart';
-import 'database_service.dart';
+import 'screens/home/controllers/add_expense_controller.dart';
+import 'data/database_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,9 +18,6 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         Provider<DatabaseService>(create: (_) => databaseService),
-        ChangeNotifierProvider<AddExpenseController>(
-          create: (_) => AddExpenseController(databaseService: databaseService),
-        ),
       ],
       child: const MyApp(),
     ),

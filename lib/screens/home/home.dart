@@ -1,38 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:myapp/database_service.dart';
-import 'package:myapp/model/Expense.dart';
+import 'package:myapp/data/database_service.dart';
 import 'package:myapp/screens/home/all_expense.dart';
 import 'package:myapp/widgets/empty_expense.dart';
 import 'package:myapp/widgets/home_stat.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget {
+import 'controllers/home_controller.dart';
+
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  List<Expense> _expenses = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _loadExpenses();
-  }
-
-  Future<void> _loadExpenses() async {
-    final databaseService = Provider.of<DatabaseService>(context, listen: false);
-    _expenses = await databaseService.getLatestExpenses(7);
-    setState(() {});
-  }
-
-  void _onDismissed(int index) async {
-    final databaseService = Provider.of<DatabaseService>(context, listen: false);
-    await databaseService.deleteExpense(_expenses[index].id);
-    _loadExpenses();
+  void _onDismissed(BuildContext context, int index, List expenses) async {
+    final databaseService = Provider.of<DatabaseService>(
+      context,
+      listen: false,
+    );
+    await databaseService.deleteExpense(expenses[index].id);
   }
 
   @override
@@ -45,13 +29,37 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         elevation: 0,
       ),
-      body: Column(
-        children: [
-          HomeStat(),
-          _expenses.isNotEmpty
-              ? AllExpense(expenses: _expenses, onDismissed: _onDismissed)
-              : EmptyExpense(),
-        ],
+      body: ChangeNotifierProvider(
+        create: (context) =>
+            HomeController(databaseService: context.read<DatabaseService>()),
+        child: Consumer<HomeController>(
+          builder: (context, homeController, _) {
+            return Column(
+              children: [
+                HomeStat(),
+                StreamBuilder(
+                  stream: homeController.latestExpenses,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final expenses = snapshot.data!;
+                      return expenses.isNotEmpty
+                          ? AllExpense(
+                              expenses: expenses,
+                              onDismissed: (index) =>
+                                  _onDismissed(context, index, expenses),
+                            )
+                          : EmptyExpense();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  },
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:myapp/database_service.dart';
+import 'package:myapp/data/database_service.dart';
 import 'package:myapp/model/Category.dart';
 
 class AddExpenseController extends ChangeNotifier {
@@ -18,7 +17,8 @@ class AddExpenseController extends ChangeNotifier {
   AddExpenseController({required this.databaseService});
 
   Future<List<Category>> getCategories() async {
-    final categoriesFromDatabase = await databaseService.watchAllCategories().first;
+    final categoriesFromDatabase =
+        await databaseService.watchAllCategories().first;
     final allCategories = [...defaultCategories, ...categoriesFromDatabase];
     return allCategories;
   }

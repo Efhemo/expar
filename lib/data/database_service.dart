@@ -1,9 +1,9 @@
+import 'package:myapp/model/Category.dart';
+import 'package:myapp/model/Expense.dart';
+import 'package:myapp/objectbox.g.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'model/Category.dart';
-import 'model/Expense.dart';
 import 'my_objectbox.dart';
-import 'objectbox.g.dart';
 
 class DatabaseService {
   late final Store store;
@@ -83,5 +83,14 @@ class DatabaseService {
         box.query().order(Expense_.date, flags: Order.descending).build();
     query.limit = limit;
     return query.find();
+  }
+
+  Stream<List<Expense>> watchLatestExpenses(int limit) {
+    final box = store.box<Expense>();
+    final query = box.query().order(Expense_.date, flags: Order.descending);
+    return query.watch(triggerImmediately: true).map((query) {
+      query.limit = limit;
+      return query.find();
+    });
   }
 }

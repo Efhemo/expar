@@ -1,4 +1,4 @@
-import 'objectbox.g.dart';
+import 'package:myapp/objectbox.g.dart';
 
 class MyObjectBox {
   /// Create an instance of ObjectBox to use throughout the app.
