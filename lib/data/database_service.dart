@@ -26,12 +26,14 @@ class DatabaseService {
     double amount,
     DateTime date,
     Category category,
+    String? description,
   ) async {
     final newExpense =
         Expense()
           ..name = name
           ..amount = amount
           ..date = date
+          ..description = description
           ..category.target = category;
 
     store.runInTransaction(TxMode.write, () {
@@ -52,12 +54,14 @@ class DatabaseService {
     double amount,
     DateTime date,
     Category category,
+    String? description,
   ) async {
     final expense = store.box<Expense>().get(id);
     if (expense != null) {
       expense.name = name;
       expense.amount = amount;
       expense.date = date;
+      expense.description = description;
       expense.category.target = category;
       store.runInTransaction(TxMode.write, () {
         store.box<Expense>().put(expense);

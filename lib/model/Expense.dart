@@ -8,6 +8,7 @@ class Expense {
   String? name;
   double? amount;
   DateTime? date;
+  String? description;
 
   final category = ToOne<Category>();
 }

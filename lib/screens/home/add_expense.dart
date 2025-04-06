@@ -153,22 +153,22 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                         keyboardType: TextInputType.multiline,
                         maxLines: 3,
                       ),
-                      const SizedBox(height: 20),
-                      Align(
-                        alignment: Alignment.center,
-                        child: CustomButton(
-                          text: 'Add expense report',
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              final success = await controller.addExpense();
-                              if (success) {
-                                context.go('/successful');
-                              }
+                    const SizedBox(height: 20),
+                    Align(
+                      alignment: Alignment.center,
+                      child: CustomButton(
+                        text: 'Add expense report',
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            final success = await controller.addExpense();
+                            if (success) {
+                              context.go('/successful');
                             }
-                          },
-                        ),
+                          }
+                        },
                       ),
-                    ],
+                    ),
+                  ],
                   ),
                 ),
               ),
