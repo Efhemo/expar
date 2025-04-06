@@ -22,7 +22,11 @@ class AddExpenseScreen extends StatefulWidget {
 
 class _AddExpenseScreenState extends State<AddExpenseScreen> {
   final _formKey = GlobalKey<FormState>();
-  Category? _selectedCategory;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -77,15 +81,23 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    StreamBuilder<List<Category>>(
-                      stream: controller.categories,
+                    Text(
+                      'Category',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    FutureBuilder<List<Category>>(
+                      future: controller.getCategories(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           final categories = snapshot.data!;
                           return CustomDropdown<Category>.search(
                             hintText: 'Select category',
                             items: categories,
-                            initialItem: _selectedCategory,
+                            // initialItem: initialCategory,
                             overlayHeight: 342,
                             decoration: CustomDropdownDecoration(
                               closedFillColor: fillGrey,
@@ -103,7 +115,6 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                             onChanged: (value) {
                               log('SearchDropdown onChanged value: $value');
                               setState(() {
-                                _selectedCategory = value;
                                 controller.setSelectedCategory(value!);
                               });
                             },

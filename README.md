@@ -4,6 +4,12 @@ A new Flutter project.
 
 ## Getting Started
 
+To generate the Objectbox file run
+
+``dart run build_runner build --delete-conflicting-outputs``
+
+This command will generate the .g.dart files and delete any conflicting outputs from previous builds.
+
 This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:

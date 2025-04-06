@@ -54,7 +54,7 @@ class ExpenseItem extends StatelessWidget {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
                 Text(
-                  expense.category.value?.name ?? '',
+                  expense.category.target?.name ?? '',
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
               ],

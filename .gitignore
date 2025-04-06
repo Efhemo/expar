@@ -46,3 +46,4 @@ app.*.map.json
 
 .idx/
 android/app/.cxx/
+*.g.dart

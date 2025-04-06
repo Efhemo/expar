@@ -1,9 +1,13 @@
-import 'package:isar/isar.dart';
+import 'package:objectbox/objectbox.dart';
 
-part 'Category.g.dart';
-
-@collection
+@Entity()
 class Category {
-  Id id = Isar.autoIncrement;
+  @Id()
+  int id = 0;
   String? name;
+
+  @override
+  String toString() {
+    return name ?? "";
+  }
 }

@@ -1,14 +1,13 @@
-import 'package:isar/isar.dart';
+import 'package:objectbox/objectbox.dart';
 import 'Category.dart';
 
-part 'Expense.g.dart';
-
-@collection
+@Entity()
 class Expense {
-  Id id = Isar.autoIncrement;
+  @Id()
+  int id = 0;
   String? name;
   double? amount;
   DateTime? date;
 
-  final category = IsarLink<Category>();
+  final category = ToOne<Category>();
 }

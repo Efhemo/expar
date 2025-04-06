@@ -5,18 +5,21 @@ import 'package:myapp/screens/home/add_expense.dart';
 import 'package:myapp/screens/successful_page.dart';
 import 'package:myapp/utils/palette.dart';
 import 'package:provider/provider.dart';
+
+import 'add_expense_controller.dart';
 import 'database_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final databaseService = DatabaseService();
-  await databaseService.initializeIsar();
+  await databaseService.initializeObjectBox();
 
   runApp(
     MultiProvider(
       providers: [
-        Provider<DatabaseService>(
-          create: (_) => databaseService,
+        Provider<DatabaseService>(create: (_) => databaseService),
+        ChangeNotifierProvider<AddExpenseController>(
+          create: (_) => AddExpenseController(databaseService: databaseService),
         ),
       ],
       child: const MyApp(),

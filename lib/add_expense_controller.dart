@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:myapp/database_service.dart';
 import 'package:myapp/model/Category.dart';
 
@@ -8,11 +9,18 @@ class AddExpenseController extends ChangeNotifier {
   final TextEditingController amountController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
-  late final Stream<List<Category>> categories;
   Category? selectedCategory;
+  final List<Category> defaultCategories = [
+    Category()..name = 'Groceries',
+    Category()..name = 'Transportation',
+  ];
 
-  AddExpenseController({required this.databaseService}) {
-    categories = databaseService.watchAllCategories();
+  AddExpenseController({required this.databaseService});
+
+  Future<List<Category>> getCategories() async {
+    final categoriesFromDatabase = await databaseService.watchAllCategories().first;
+    final allCategories = [...defaultCategories, ...categoriesFromDatabase];
+    return allCategories;
   }
 
   void setSelectedCategory(Category category) {
