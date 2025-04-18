@@ -9,12 +9,13 @@ import 'package:myapp/widgets/add_category_text_button.dart';
 import 'package:myapp/widgets/category_dropdown.dart';
 import 'package:myapp/widgets/custom_button.dart';
 import 'package:myapp/widgets/custom_text_input.dart';
+import 'package:myapp/widgets/date_time_field.dart';
 import 'package:provider/provider.dart';
 
 import 'controllers/add_expense_controller.dart';
 
 class AddExpenseScreen extends StatefulWidget {
-  const AddExpenseScreen({Key? key}) : super(key: key);
+  const AddExpenseScreen({super.key});
 
   @override
   _AddExpenseScreenState createState() => _AddExpenseScreenState();
@@ -94,6 +95,20 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                 : null,
                       ),
                       const SizedBox(height: 8),
+                      DateTimeField(
+                        labelText: 'Date',
+                        lastDate: DateTime.now(),
+                        onChanged: (DateTime? date) {
+                          controller.setSelectedDate(date);
+                        },
+                        validator: (DateTime? date) {
+                          if (date == null) {
+                            return 'Date is required';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 8),
                       Text(
                         'Category',
                         style: const TextStyle(
@@ -155,7 +170,9 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                 );
                                 return;
                               }
-                              final success = await controller.addExpense();
+                              final success = await controller.addExpense(
+                                controller.selectedDate,
+                              );
                               if (success) {
                                 context.go('/successful');
                               }

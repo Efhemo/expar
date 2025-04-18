@@ -45,6 +45,7 @@ dependencies:
   objectbox: ^4.1.0
   objectbox_flutter_libs: ^4.1.0
   fluttertoast: ^8.2.12
+  pie_chart: ^5.4.0
 
   path_provider: any
 
