@@ -146,12 +146,7 @@ class DatabaseService {
     final expenses = query.find();
 
     final monthYearSet = <String>{};
-    print("expenses printing" + expenses.length.toString());
     for (final expense in expenses) {
-      print(expense);
-      print(expense.date);
-      print(expense.date?.year);
-      print(expense.date?.month);
       if (expense.date != null) {
         final monthYear = DateFormat('yyyy-MM').format(expense.date!);
         monthYearSet.add(monthYear);
