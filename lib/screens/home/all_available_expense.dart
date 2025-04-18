@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/data/database_service.dart';
 import 'package:myapp/model/Expense.dart';
 import 'package:myapp/screens/home/controllers/all_available_expense_controller.dart';
 import 'package:provider/provider.dart';
@@ -10,16 +9,17 @@ class AllAvailableExpense extends StatelessWidget {
   const AllAvailableExpense({super.key});
 
   void _onDismissed(BuildContext context, int index, List expenses) async {
-    final databaseService = Provider.of<DatabaseService>(
+    final controller = Provider.of<AllAvailableExpenseController>(
       context,
       listen: false,
     );
-    await databaseService.deleteExpense(expenses[index].id);
+    await controller.onDismissed(index, expenses);
   }
 
   @override
   Widget build(BuildContext context) {
-    final allAvailableExpenseController = Provider.of<AllAvailableExpenseController>(context);
+    final allAvailableExpenseController =
+        Provider.of<AllAvailableExpenseController>(context);
     return Scaffold(
       appBar: AppBar(title: const Text('All Expenses')),
       body: StreamBuilder<List<Expense>>(

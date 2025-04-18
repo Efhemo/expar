@@ -40,6 +40,13 @@ class HomeController extends ChangeNotifier {
         );
   }
 
+  Future<void> onDismissed(int index, List expenses) async {
+    if (expenses.length < 2) {
+      selectedMonthYear.value = null;
+    }
+    await databaseService.deleteExpense(expenses[index].id);
+  }
+
   @override
   void dispose() {
     selectedMonthYear.removeListener(_loadExpenses);

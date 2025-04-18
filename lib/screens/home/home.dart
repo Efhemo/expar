@@ -12,11 +12,8 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   void _onDismissed(BuildContext context, int index, List expenses) async {
-    final databaseService = Provider.of<DatabaseService>(
-      context,
-      listen: false,
-    );
-    await databaseService.deleteExpense(expenses[index].id);
+    final controller = Provider.of<HomeController>(context, listen: false);
+    await controller.onDismissed(index, expenses);
   }
 
   @override

@@ -16,13 +16,17 @@ class StatScreenController extends ChangeNotifier {
     return selectedMonthYear.value == null
         ? Stream.value([])
         : databaseService.getCategoryExpensesStream(
-            int.parse(selectedMonthYear.value!.split('-')[1]),
-            int.parse(selectedMonthYear.value!.split('-')[0]),
-          );
+          int.parse(selectedMonthYear.value!.split('-')[1]),
+          int.parse(selectedMonthYear.value!.split('-')[0]),
+        );
   }
 
   Future<List<String>> getAllMonthYearOptions() async {
-    return await databaseService.getAllMonthYearOptions();
+    final allMonthYearOptions = await databaseService.getAllMonthYearOptions();
+    if (allMonthYearOptions.isNotEmpty && selectedMonthYear.value == null) {
+      selectedMonthYear.value = allMonthYearOptions.first;
+    }
+    return allMonthYearOptions;
   }
 
   Future<void> _loadCategoryExpenses() async {

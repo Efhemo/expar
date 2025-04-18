@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:myapp/data/database_service.dart';
 import 'package:myapp/screens/home/controllers/home_controller.dart';
 import 'package:myapp/utils/palette.dart';
 import 'package:provider/provider.dart';
@@ -27,19 +26,15 @@ class HomeStat extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  NumberFormat.currency(
-                    locale: 'en_US',
-                  ).format(totalAmount),
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  NumberFormat.currency(locale: 'en_US').format(totalAmount),
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 Text('(0) Expenses report created'),
               ],
             ),
             ValueListenableBuilder<String?>(
-              valueListenable: Provider.of<HomeController>(context).selectedMonthYear,
+              valueListenable:
+                  Provider.of<HomeController>(context).selectedMonthYear,
               builder: (context, selectedMonthYear, child) {
                 final homeController = Provider.of<HomeController>(context);
                 final monthYearOptions = homeController.monthYearOptions;
@@ -57,8 +52,7 @@ class HomeStat extends StatelessWidget {
                         );
                       }).toList(),
                   onChanged: (String? newValue) {
-                    homeController.selectedMonthYear.value =
-                        newValue;
+                    homeController.selectedMonthYear.value = newValue;
                   },
                 );
               },
