@@ -11,7 +11,9 @@ class HomeController extends ChangeNotifier {
   HomeController({required this.databaseService}) {
     _allExpenses = databaseService.watchAllExpenses();
     selectedMonthYear.addListener(_loadExpenses);
-    _loadMonthYearOptions();
+    _allExpenses.listen((_) {
+      _loadMonthYearOptions();
+    });
   }
 
   late final Stream<List<Expense>> _allExpenses;
