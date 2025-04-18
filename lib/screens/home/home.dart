@@ -46,7 +46,7 @@ class HomeScreen extends StatelessWidget {
                       HomeStat(
                         totalAmount: expenses.fold(
                           0.0,
-                          (sum, expense) => sum + expense.amount ?? 0,
+                          (sum, expense) => sum + (expense.amount ?? 0),
                         ),
                       ),
                       expenses.isNotEmpty

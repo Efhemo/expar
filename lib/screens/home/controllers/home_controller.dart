@@ -6,17 +6,23 @@ class HomeController extends ChangeNotifier {
   final DatabaseService databaseService;
 
   final ValueNotifier<String?> selectedMonthYear = ValueNotifier<String?>(null);
+  List<String> monthYearOptions = [];
 
   HomeController({required this.databaseService}) {
     _allExpenses = databaseService.watchAllExpenses();
     selectedMonthYear.addListener(_loadExpenses);
+    _loadMonthYearOptions();
   }
 
   late final Stream<List<Expense>> _allExpenses;
   Stream<List<Expense>> get allExpenses => _allExpenses;
 
-  Future<List<String>> getAllMonthYearOptions() async {
-    return await databaseService.getAllMonthYearOptions();
+  Future<void> _loadMonthYearOptions() async {
+    monthYearOptions = await databaseService.getAllMonthYearOptions();
+    if (monthYearOptions.isNotEmpty && selectedMonthYear.value == null) {
+      selectedMonthYear.value = monthYearOptions.first;
+    }
+    notifyListeners();
   }
 
   Future<void> _loadExpenses() async {

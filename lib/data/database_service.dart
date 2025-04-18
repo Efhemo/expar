@@ -121,12 +121,6 @@ class DatabaseService {
 
     return Stream.periodic(const Duration(milliseconds: 500)).map((_) {
       final expenses = query.find();
-      print('Expenses for $month-$year:');
-      for (final expense in expenses) {
-        print(
-          '  Name: ${expense.name}, Amount: ${expense.amount}, Date: ${expense.date}, Category: ${expense.category.target?.name}',
-        );
-      }
       final categoryExpenses = <CategoryExpense>[];
 
       final categoryMap = <String, double>{};
@@ -162,5 +156,28 @@ class DatabaseService {
     return monthYearSet.toList();
   }
 
-  Stream<List<Expense>> getExpensesStream(int month, int year) {}
+  Stream<List<Expense>> getExpensesStream(int month, int year) {
+    final box = store.box<Expense>();
+
+    final startDate = DateTime(year, month);
+    final endDate = DateTime(
+      year,
+      month + 1,
+    ).subtract(const Duration(milliseconds: 1));
+
+    final query =
+        box
+            .query(
+              Expense_.date.between(
+                startDate.millisecondsSinceEpoch,
+                endDate.millisecondsSinceEpoch,
+              ),
+            )
+            .build();
+
+    return Stream.periodic(const Duration(milliseconds: 500)).map((_) {
+      final expenses = query.find();
+      return expenses;
+    });
+  }
 }

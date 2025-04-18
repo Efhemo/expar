@@ -24,7 +24,8 @@ class ExpenseItem extends StatelessWidget {
       background: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.blue,
+          color: fillGrey,
+          border: Border.all(color: fillGrey, width: 0.5),
           borderRadius: BorderRadius.circular(10),
         ),
         child: const Align(
@@ -69,6 +70,9 @@ class ExpenseItem extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
           ),
           children: <Widget>[
             Padding(
