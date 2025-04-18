@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:myapp/screens/dashboard.dart';
 import 'package:myapp/screens/home/add_expense.dart';
 import 'package:myapp/screens/successful_page.dart';
+import 'package:myapp/screens/stat/stat_screen_controller.dart';
 import 'package:myapp/utils/palette.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +19,7 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         Provider<DatabaseService>(create: (_) => databaseService),
+        ChangeNotifierProvider(create: (context) => StatScreenController(databaseService: databaseService)),
       ],
       child: const MyApp(),
     ),

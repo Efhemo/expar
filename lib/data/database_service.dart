@@ -1,4 +1,6 @@
+import 'package:intl/intl.dart';
 import 'package:myapp/model/Category.dart';
+import 'package:myapp/model/CategoryExpense.dart';
 import 'package:myapp/model/Expense.dart';
 import 'package:myapp/objectbox.g.dart';
 import 'package:path_provider/path_provider.dart';
@@ -96,5 +98,66 @@ class DatabaseService {
       query.limit = limit;
       return query.find();
     });
+  }
+
+  Stream<List<CategoryExpense>> getCategoryExpensesStream(int month, int year) {
+    final box = store.box<Expense>();
+
+    final startDate = DateTime(year, month);
+    final endDate = DateTime(
+      year,
+      month + 1,
+    ).subtract(const Duration(milliseconds: 1));
+
+    final query =
+        box
+            .query(
+              Expense_.date.between(
+                startDate.millisecondsSinceEpoch,
+                endDate.millisecondsSinceEpoch,
+              ),
+            )
+            .build();
+
+    return Stream.periodic(const Duration(milliseconds: 500)).map((_) {
+      final expenses = query.find();
+      final categoryExpenses = <CategoryExpense>[];
+
+      final categoryMap = <String, double>{};
+      for (final expense in expenses) {
+        final categoryName = expense.category.target?.name ?? 'Unknown';
+        categoryMap[categoryName] =
+            (categoryMap[categoryName] ?? 0) + (expense.amount ?? 0);
+      }
+
+      categoryMap.forEach((category, amount) {
+        categoryExpenses.add(
+          CategoryExpense(category: category, amount: amount),
+        );
+      });
+
+      return categoryExpenses;
+    });
+  }
+
+  Future<List<String>> getAllMonthYearOptions() async {
+    final box = store.box<Expense>();
+    final query = box.query().build();
+    final expenses = query.find();
+
+    final monthYearSet = <String>{};
+    print("expenses printing" + expenses.length.toString());
+    for (final expense in expenses) {
+      print(expense);
+      print(expense.date);
+      print(expense.date?.year);
+      print(expense.date?.month);
+      if (expense.date != null) {
+        final monthYear = DateFormat('yyyy-MM').format(expense.date!);
+        monthYearSet.add(monthYear);
+      }
+    }
+
+    return monthYearSet.toList();
   }
 }
