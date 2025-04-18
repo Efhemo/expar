@@ -9,10 +9,7 @@ class AddExpenseController extends ChangeNotifier {
   final TextEditingController descriptionController = TextEditingController();
 
   Category? selectedCategory;
-  final List<Category> defaultCategories = [
-    Category()..name = 'Groceries',
-    Category()..name = 'Transportation',
-  ];
+  DateTime? selectedDate;
 
   late final Stream<List<Category>> _categories;
   Stream<List<Category>> get categories => _categories;
@@ -26,12 +23,10 @@ class AddExpenseController extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Future<List<Category>> getCategories() async {
-  //   final categoriesFromDatabase =
-  //       await databaseService.watchAllCategories().first;
-  //   final allCategories = [...defaultCategories, ...categoriesFromDatabase];
-  //   return allCategories;
-  // }
+  void setSelectedDate(DateTime? date) {
+    selectedDate = date;
+    notifyListeners();
+  }
 
   Future<Category?> addCategory(String name) async {
     return await databaseService.createCategory(name);
@@ -40,13 +35,14 @@ class AddExpenseController extends ChangeNotifier {
   bool validateExpense() {
     if (expenseNameController.text.isEmpty ||
         amountController.text.isEmpty ||
-        selectedCategory == null) {
+        selectedCategory == null ||
+        selectedDate == null) {
       return false;
     }
     return true;
   }
 
-  Future<bool> addExpense() async {
+  Future<bool> addExpense(DateTime? date) async {
     if (!validateExpense()) {
       return false;
     }
@@ -55,10 +51,14 @@ class AddExpenseController extends ChangeNotifier {
     final amount = double.tryParse(amountController.text) ?? 0.0;
     final description = descriptionController.text;
 
+    if (selectedDate == null) {
+      return false;
+    }
+
     await databaseService.addExpense(
       name,
       amount,
-      DateTime.now(),
+      selectedDate!,
       selectedCategory!,
       description,
     );

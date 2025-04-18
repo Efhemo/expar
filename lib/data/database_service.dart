@@ -30,13 +30,12 @@ class DatabaseService {
     Category category,
     String? description,
   ) async {
-    final newExpense =
-        Expense()
-          ..name = name
-          ..amount = amount
-          ..date = date
-          ..description = description
-          ..category.target = category;
+    final newExpense = Expense()
+      ..name = name
+      ..amount = amount
+      ..date = date
+      ..description = description
+      ..category.target = category;
 
     store.runInTransaction(TxMode.write, () {
       store.box<Expense>().put(newExpense);
@@ -121,6 +120,10 @@ class DatabaseService {
 
     return Stream.periodic(const Duration(milliseconds: 500)).map((_) {
       final expenses = query.find();
+      print('Expenses for $month-$year:');
+      for (final expense in expenses) {
+        print('  Name: ${expense.name}, Amount: ${expense.amount}, Date: ${expense.date}, Category: ${expense.category.target?.name}');
+      }
       final categoryExpenses = <CategoryExpense>[];
 
       final categoryMap = <String, double>{};
