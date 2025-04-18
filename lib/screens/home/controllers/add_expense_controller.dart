@@ -48,7 +48,7 @@ class AddExpenseController extends ChangeNotifier {
     }
 
     final name = expenseNameController.text;
-    final amount = double.tryParse(amountController.text) ?? 0.0;
+    final amount = double.tryParse(amountController.text.replaceAll(',', '')) ?? 0.0;
     final description = descriptionController.text;
 
     if (selectedDate == null) {
