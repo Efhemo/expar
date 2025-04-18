@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 import 'controllers/add_expense_controller.dart';
 
 class AddExpenseScreen extends StatefulWidget {
-  const AddExpenseScreen({Key? key}) : super(key: key);
+  const AddExpenseScreen({super.key});
 
   @override
   _AddExpenseScreenState createState() => _AddExpenseScreenState();

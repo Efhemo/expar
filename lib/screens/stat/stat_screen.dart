@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:myapp/model/CategoryExpense.dart';
 import 'package:myapp/screens/stat/stat_screen_controller.dart';
-import 'package:pie_chart/pie_chart.dart';
-import 'package:provider/provider.dart';
 import 'package:myapp/widgets/pie_chart.dart';
+import 'package:provider/provider.dart';
 
 class StatScreen extends StatelessWidget {
   const StatScreen({Key? key}) : super(key: key);
@@ -65,7 +63,7 @@ class StatScreen extends StatelessWidget {
                   stream: controller.categoryExpensesStream,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
+                      return Center(child: const CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else {
