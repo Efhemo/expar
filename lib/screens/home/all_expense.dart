@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:myapp/model/Expense.dart';
 import 'package:myapp/screens/home/expense_item.dart';
 
@@ -28,7 +29,12 @@ class AllExpense extends StatelessWidget {
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
-                TextButton(onPressed: () {}, child: Text('See all')),
+                TextButton(
+                  onPressed: () {
+                    context.go('/allExpense');
+                  },
+                  child: Text('See all'),
+                ),
               ],
             ),
           ),
