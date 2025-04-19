@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/data/database_service.dart';
 import 'package:myapp/model/CategoryExpense.dart';
 import 'package:myapp/screens/stat/stat_screen_controller.dart';
 import 'package:myapp/widgets/pie_chart.dart';
@@ -19,62 +20,60 @@ class StatScreen extends StatelessWidget {
         ),
         elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Consumer<StatScreenController>(
-          builder: (context, controller, child) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ValueListenableBuilder<String?>(
-                  valueListenable: controller.selectedMonthYear,
-                  builder: (context, selectedMonthYear, child) {
-                    return FutureBuilder<List<String>>(
-                      future: controller.getAllMonthYearOptions(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const CircularProgressIndicator();
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else {
-                          final monthYearOptions = snapshot.data ?? [];
-                          return DropdownButton<String>(
-                            value: selectedMonthYear,
-                            hint: const Text('Select Month and Year'),
-                            items:
-                                monthYearOptions.map((String monthYear) {
-                                  return DropdownMenuItem<String>(
-                                    value: monthYear,
-                                    child: Text(monthYear),
-                                  );
-                                }).toList(),
-                            onChanged: (String? newValue) {
-                              controller.selectedMonthYear.value = newValue;
-                            },
-                          );
-                        }
-                      },
-                    );
-                  },
-                ),
-                const SizedBox(height: 16),
-                StreamBuilder<List<CategoryExpense>>(
-                  stream: controller.categoryExpensesStream,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: const CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      final categoryExpenses = snapshot.data ?? [];
-                      return PieChartWidget(categoryExpenses: categoryExpenses);
-                    }
-                  },
-                ),
-              ],
-            );
-          },
+      body: ChangeNotifierProvider(
+        create:
+            (context) => StatScreenController(
+              databaseService: context.read<DatabaseService>(),
+            ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Consumer<StatScreenController>(
+            builder: (context, controller, child) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ValueListenableBuilder<String?>(
+                    valueListenable: controller.selectedMonthYear,
+                    builder: (context, selectedMonthYear, child) {
+                      // final controller = Provider.of<StatScreenController>(
+                      //   context,
+                      // );
+                      return DropdownButton<String>(
+                        value: selectedMonthYear,
+                        hint: const Text('Select Month and Year'),
+                        items:
+                            controller.monthYearOptions.map((String monthYear) {
+                              return DropdownMenuItem<String>(
+                                value: monthYear,
+                                child: Text(monthYear),
+                              );
+                            }).toList(),
+                        onChanged: (String? newValue) {
+                          controller.selectedMonthYear.value = newValue;
+                        },
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  StreamBuilder<List<CategoryExpense>>(
+                    stream: controller.categoryExpensesStream,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: const CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+                        final categoryExpenses = snapshot.data ?? [];
+                        return PieChartWidget(
+                          categoryExpenses: categoryExpenses,
+                        );
+                      }
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );

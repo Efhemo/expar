@@ -12,11 +12,8 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   void _onDismissed(BuildContext context, int index, List expenses) async {
-    final databaseService = Provider.of<DatabaseService>(
-      context,
-      listen: false,
-    );
-    await databaseService.deleteExpense(expenses[index].id);
+    final controller = Provider.of<HomeController>(context, listen: false);
+    controller.onDismissed(index, expenses);
   }
 
   @override
@@ -30,33 +27,41 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
       ),
       body: ChangeNotifierProvider(
-        create: (context) =>
-            HomeController(databaseService: context.read<DatabaseService>()),
+        create:
+            (context) => HomeController(
+              databaseService: context.read<DatabaseService>(),
+            ),
         child: Consumer<HomeController>(
           builder: (context, homeController, _) {
-            return Column(
-              children: [
-                HomeStat(),
-                StreamBuilder(
-                  stream: homeController.latestExpenses,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      final expenses = snapshot.data!;
-                      return expenses.isNotEmpty
+            return StreamBuilder(
+              stream: homeController.monthYearExpensesStream,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final expenses = snapshot.data!;
+                  return Column(
+                    children: [
+                      HomeStat(
+                        totalAmount: expenses.fold(
+                          0.0,
+                          (sum, expense) => sum + (expense.amount ?? 0),
+                        ),
+                      ),
+                      expenses.isNotEmpty
                           ? AllExpense(
-                              expenses: expenses,
-                              onDismissed: (index) =>
-                                  _onDismissed(context, index, expenses),
-                            )
-                          : EmptyExpense();
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      return CircularProgressIndicator();
-                    }
-                  },
-                ),
-              ],
+                            expenses: expenses,
+                            onDismissed:
+                                (index) =>
+                                    _onDismissed(context, index, expenses),
+                          )
+                          : EmptyExpense(),
+                    ],
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
             );
           },
         ),

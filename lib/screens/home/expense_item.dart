@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:myapp/model/Expense.dart';
 import 'package:myapp/utils/palette.dart';
 
@@ -24,7 +25,8 @@ class ExpenseItem extends StatelessWidget {
       background: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.blue,
+          color: fillGrey,
+          border: Border.all(color: fillGrey, width: 0.5),
           borderRadius: BorderRadius.circular(10),
         ),
         child: const Align(
@@ -70,9 +72,36 @@ class ExpenseItem extends StatelessWidget {
               ),
             ],
           ),
+          expandedCrossAxisAlignment: CrossAxisAlignment.start,
+          expandedAlignment: Alignment.topLeft,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.calendar_today,
+                    size: 16,
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    DateFormat(
+                      'yyyy-MM-dd',
+                    ).format(expense.date ?? DateTime.now()),
+                    style: const TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 16.0,
+              ),
               child: Text(
                 expense.description ?? 'No description',
                 style: const TextStyle(fontSize: 14),

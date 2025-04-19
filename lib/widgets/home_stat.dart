@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:myapp/screens/home/controllers/home_controller.dart';
 import 'package:myapp/utils/palette.dart';
+import 'package:provider/provider.dart';
 
 class HomeStat extends StatelessWidget {
-  const HomeStat({super.key});
+  final double totalAmount;
+  const HomeStat({super.key, required this.totalAmount});
 
   @override
   Widget build(BuildContext context) {
@@ -20,16 +24,38 @@ class HomeStat extends StatelessWidget {
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text(
-                  '\$0.00',
+                  NumberFormat.currency(locale: 'en_US').format(totalAmount),
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                Text('(0) Expenses report created'),
+                // Text('(0) Expenses report created'),
               ],
             ),
-            Row(
-              children: const [Text('Jan 2025'), Icon(Icons.arrow_drop_down)],
+            ValueListenableBuilder<String?>(
+              valueListenable:
+                  Provider.of<HomeController>(context).selectedMonthYear,
+              builder: (context, selectedMonthYear, child) {
+                final homeController = Provider.of<HomeController>(context);
+                final monthYearOptions = homeController.monthYearOptions;
+                // if (monthYearOptions.isEmpty) {
+                //   return const CircularProgressIndicator();
+                // }
+                return DropdownButton<String>(
+                  value: selectedMonthYear,
+                  hint: const Text(''),
+                  items:
+                      monthYearOptions.map((String monthYear) {
+                        return DropdownMenuItem<String>(
+                          value: monthYear,
+                          child: Text(monthYear),
+                        );
+                      }).toList(),
+                  onChanged: (String? newValue) {
+                    homeController.selectedMonthYear.value = newValue;
+                  },
+                );
+              },
             ),
           ],
         ),

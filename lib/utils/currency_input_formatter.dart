@@ -10,10 +10,10 @@ class CurrencyInputFormatter extends TextInputFormatter {
     String newText = newValue.text;
 
     // Remove any non-numeric characters
-    String cleanText = newText.replaceAll(RegExp(r'[^0-9]'), '');
+    String cleanText = newText.replaceAll(RegExp(r'[^0-9.]'), '');
 
     // Parse the cleaned text as an integer
-    double? parsedValue = double.tryParse(cleanText) ;
+    double? parsedValue = double.tryParse(cleanText);
 
     if (parsedValue == null) {
       return newValue.copyWith(
