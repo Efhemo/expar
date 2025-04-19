@@ -29,7 +29,7 @@ class HomeStat extends StatelessWidget {
                   NumberFormat.currency(locale: 'en_US').format(totalAmount),
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                Text('(0) Expenses report created'),
+                // Text('(0) Expenses report created'),
               ],
             ),
             ValueListenableBuilder<String?>(
@@ -38,9 +38,9 @@ class HomeStat extends StatelessWidget {
               builder: (context, selectedMonthYear, child) {
                 final homeController = Provider.of<HomeController>(context);
                 final monthYearOptions = homeController.monthYearOptions;
-                if (monthYearOptions.isEmpty) {
-                  return const CircularProgressIndicator();
-                }
+                // if (monthYearOptions.isEmpty) {
+                //   return const CircularProgressIndicator();
+                // }
                 return DropdownButton<String>(
                   value: selectedMonthYear,
                   hint: const Text(''),

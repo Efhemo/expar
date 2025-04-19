@@ -173,6 +173,7 @@ class DatabaseService {
                 endDate.millisecondsSinceEpoch,
               ),
             )
+            .order(Expense_.date)
             .build();
 
     return Stream.periodic(const Duration(milliseconds: 500)).map((_) {

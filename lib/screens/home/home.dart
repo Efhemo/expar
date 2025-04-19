@@ -13,7 +13,7 @@ class HomeScreen extends StatelessWidget {
 
   void _onDismissed(BuildContext context, int index, List expenses) async {
     final controller = Provider.of<HomeController>(context, listen: false);
-    await controller.onDismissed(index, expenses);
+    controller.onDismissed(index, expenses);
   }
 
   @override

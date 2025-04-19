@@ -10,5 +10,6 @@ class AllAvailableExpenseController extends ChangeNotifier {
 
   Future<void> onDismissed(int index, List expenses) async {
     await databaseService.deleteExpense(expenses[index].id);
+    notifyListeners();
   }
 }
