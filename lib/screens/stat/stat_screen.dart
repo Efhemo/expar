@@ -52,38 +52,6 @@ class StatScreen extends StatelessWidget {
                           controller.selectedMonthYear.value = newValue;
                         },
                       );
-                      // return FutureBuilder<List<String>>(
-                      //   future: controller.getAllMonthYearOptions(),
-                      //   builder: (context, snapshot) {
-                      //     if (snapshot.connectionState ==
-                      //         ConnectionState.waiting) {
-                      //       return const CircularProgressIndicator();
-                      //     } else if (snapshot.hasError) {
-                      //       return Text('Error: ${snapshot.error}');
-                      //     } else {
-                      //       final monthYearOptions = snapshot.data ?? [];
-                      //       return GestureDetector(
-                      //         child: DropdownButton<String>(
-                      //           value: selectedMonthYear,
-                      //           hint: const Text('Select Month and Year'),
-                      //           items:
-                      //               monthYearOptions.map((String monthYear) {
-                      //                 return DropdownMenuItem<String>(
-                      //                   value: monthYear,
-                      //                   child: Text(monthYear),
-                      //                 );
-                      //               }).toList(),
-                      //           onChanged: (String? newValue) {
-                      //             controller.selectedMonthYear.value = newValue;
-                      //           },
-                      //         ),
-                      //         onTap: (){
-                      //           controller.getAllMonthYearOptions();
-                      //         },
-                      //       );
-                      //     }
-                      //   },
-                      // );
                     },
                   ),
                   const SizedBox(height: 16),
